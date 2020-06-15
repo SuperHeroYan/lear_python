@@ -8,8 +8,11 @@ def collatz(num):
 
 print('Введите число')
 
-res = 0
 
-while res != 1:
+while True:
     answer = int(input())
     res = collatz(answer)
+    if res == 1:
+        break
+    else:
+        continue
