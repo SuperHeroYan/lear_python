@@ -1,18 +1,13 @@
-def collatz(num):
-    if num % 2 == 0:
-        print('Число ',num,' четное')
-        return num % 2
-    elif num % 2 == 1:
-        print('Число ',3 * num + 1,' нечетное')
-        return 3 * num + 1
-
-print('Введите число')
-
+cat_names = []
 
 while True:
-    answer = int(input())
-    res = collatz(answer)
-    if res == 1:
+    print('Enter name of cat' + str( len(cat_names) + 1 ) +
+        'or press enter to stop')
+    name = input()
+    if name == '':
         break
-    else:
-        continue
+    cat_names += [name]
+
+print('the cats names are:')
+for name in cat_names:
+    print(' ' + name)
