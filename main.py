@@ -1,20 +1,10 @@
-import random
+def collatz(num):
+    if num % 2 == 0:
+        print('Число ',num,' четное')
+    elif num % 2 == 1:
+        print('Число ',3 * num + 1,' нечетное')
 
-secret_num = random.randint(1,20)
-print('Я задумал число от 1 до 20, попробуй угадай суука!!')
+print('Введите число')
+answer = int(input())
 
-for guesTaken in range(1,7):
-    print('Ваш вариант')
-    guess = int(input())
-
-    if guess < secret_num:
-        print('Число меньше задуманого')
-    elif guess > secret_num:
-        print('Число больше задуманого')
-    else:
-        break
-
-if guess == secret_num:
-    print('Верно, угадал с ',str(guesTaken),'поптыки')
-else:
-    print('Неа, было число', str(secret_num))
+collatz(answer)
