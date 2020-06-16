@@ -1,6 +1,14 @@
-my_pets = ['bicha', 'zoee', 'chybasi', 'serun']
-name = input('Enter a pet name: ')
-if name not in my_pets:
-    print(name,'Does not exit!')
-else:
-    print(name, ' is my pet')
+import random
+
+message = [
+    'It is certain',
+    'Yes definitely',
+    'Reply hazy try again',
+    'Ask again later',
+    'Concentrate and ask again',
+    'My reply is no',
+    'Outlook not so good',
+    'Very doubtful',
+    ]
+
+print(message[random.randint(0, len(message) -1)])
