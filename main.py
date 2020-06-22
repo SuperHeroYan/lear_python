@@ -1,14 +1,8 @@
-import random
+def preobraz(some):
+    some[-1] = 'and ' + some[-1]
+    kekes = ", ".join(some)
+    return kekes
 
-message = [
-    'It is certain',
-    'Yes definitely',
-    'Reply hazy try again',
-    'Ask again later',
-    'Concentrate and ask again',
-    'My reply is no',
-    'Outlook not so good',
-    'Very doubtful',
-    ]
+spam = ['apples','banana', 'qugirt','koper']
 
-print(message[random.randint(0, len(message) -1)])
+print(preobraz(spam))
