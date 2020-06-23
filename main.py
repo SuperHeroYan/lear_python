@@ -1,23 +1,14 @@
-the_board = {'top-L': ' ', 'top-M': ' ', 'top-R': ' ',
-            'mid-L': ' ', 'mid-M': ' ', 'mid-R': ' ',
-            'low-L': ' ', 'low-M': ' ', 'low-R': ' '}
+back_pack = {'rope':2, 'arrows':5, 'dagger':1, 'gold coin':228}
 
+def show_inventory(staff):
+    
+    print('Inventory:')
+    item_total = 0
 
-def print_board(board):
-    print( board['top-L'] + '|' + board['top-M'] + '|' + board['top-R'])
-    print('-+-+-')
-    print( board['mid-L'] + '|' + board['mid-M'] + '|' + board['mid-R'])
-    print('-+-+-')
-    print( board['low-L'] + '|' + board['low-M'] + '|' + board['low-R'])
+    for k, v in staff.items():
+        print(str(k) + ' ' + str(v))
+        item_total += int(v)
+        
+    print('Total number of items: ' + str(item_total))
 
-turn = 'X'
-for i in range(9):
-    print_board(the_board)
-    move = input('Turn for ' + turn + ' . Move on which space ?')
-    the_board[move] = turn
-    if turn == 'X':
-        turn = 'O'
-    else:
-        turn = 'X'
-
-print_board(the_board)
+show_inventory(back_pack)
