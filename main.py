@@ -1,13 +1,13 @@
 import sqlite3
 from sqlite3 import Error
 
-def create_conntcrion(path):
+def create_connection(path):
     connection = None
     try:
+        # Подлючается к базе данных 
         connection = sqlite3.connect(path)
+        print("Connection to SQLite DB successful")
     except Error as e:
-        print(f'The error "{e}" occurred')
+        print(f"The error '{e}' occurred")
 
     return connection
-
-create_conntcrion('first_db')
