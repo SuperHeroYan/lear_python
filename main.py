@@ -21,6 +21,25 @@ CREATE TABLE IF NOT EXISTS posts(
 );
 """
 
+create_comments_table = """
+CREATE TABLE IF NOT EXISTS comments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  text TEXT NOT NULL, 
+  user_id INTEGER NOT NULL, 
+  post_id INTEGER NOT NULL, 
+  FOREIGN KEY (user_id) REFERENCES users (id) FOREIGN KEY (post_id) REFERENCES posts (id)
+);
+"""
+
+create_likes_table = """
+CREATE TABLE IF NOT EXISTS likes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  user_id INTEGER NOT NULL, 
+  post_id integer NOT NULL, 
+  FOREIGN KEY (user_id) REFERENCES users (id) FOREIGN KEY (post_id) REFERENCES posts (id)
+);
+"""
+
 # Соединение с ьд
 def create_connection(path):
     connection = None
@@ -45,4 +64,3 @@ def execute_query(connection, query):
 
 
 connect = create_connection('first_db')
-execute_query(connect, create_posts_table)
