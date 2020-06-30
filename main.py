@@ -1,13 +1,7 @@
-import sqlite3
-from sqlite3 import Error
+def printPicnic(items, left, right):
+    print('PICNIC ITEMS'.center(left + right, '-'))
+    for k, v in items.items():
+        print(k.ljust(left,'.') + str(v).rjust(right))
 
-def create_conntcrion(path):
-    connection = None
-    try:
-        connection = sqlite3.connect(path)
-    except Error as e:
-        print(f'The error "{e}" occurred')
-
-    return connection
-
-create_conntcrion('first_db')
+picitems = {'sand': 5, 'apples': 22, 'cips': 55}
+printPicnic(picitems, 12 ,6)
