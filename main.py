@@ -1,15 +1,14 @@
 import re
 
-password = input('Создайте пароль: .... \n')
+def strip(string,arg=''):
 
-regex = re.compile(r"""
-	(?=.*\d)	# Проверяет есть ли хотябы одно число
-	(?=.*[A-Z]) # Проверяет есть ли хотябы одна зглавная буква
-	([a-zA-Z0-9]){8,}""") # Кавычки значат что до 8символов 
+	if arg == '':
+		del_void = re.compile(r'(^\s+)|(\s+$)|(\s){2}')
+		result = re.sub(del_void, '', string)
+		print(result)
+	else:
+		del_void = re.compile(r'['+arg+']')
+		result = re.sub(del_void, '', string)
+		print(result)
 
-result = bool(regex.match(password))
-
-if result == False:
-	print('Пароль слабый')
-else:
-	print('Пароль сильный')
+strip('$#       apple horse    $     ')
