@@ -1,50 +1,46 @@
-# mcb.pyw - Сохраняет и загружает фрагменты текста в буфер
-# Использование: py.exe mcb.pyw save <ключение_слово> -
-# 				Сохраняет буфер обмена в ключевом словое.
-#				py.exe mcb.pyw <ключение_слово>
-#					Загружает ключ.слово в буфер обмена 
-#					py.exe mcb.pyw list - 
-#					Загружает все ключевые слов в буфер
+# Madlibs prog
+import re
+# открываем файл для чтения и вывлда контета пользователю
+textfilecontent = open('keks.txt')
+content = textfilecontent.read()
+print(content)
 
-import shelve, pyperclip, sys
-mcbShelf = shelve.open('mcb')
+find_adj = re.compile(r'ADJECTIVE')
+# Проверяем есть ли в контенте ADJECTIVE если есть то запускаеться цикл
+starteradj = bool(find_adj.search(content))
+counteradj = 0
 
-# Сохранение в буфер
-if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':
-	mcbShelf[sys.argv[2]] = pyperclip.paste()
-	print('Your data buffer successyfyly copy to database')
-	mcbShelf.close()
+while starteradj == True:
+	counteradj += 1
+	adjin = input(f'Введите {counteradj} прилагательное: \n')
+	content = re.sub(find_adj, adjin, content, 1)
+	starteradj = bool(find_adj.search(content))
+	print('\n',content)
 
-# вывод всех данных и бд
-elif len(sys.argv) == 2 and sys.argv[1].lower() == 'show':
-	print('List of Db:')
-	for key in mcbShelf:
-		print('[',key,']', '-', mcbShelf[key])
+find_noun = re.compile(r'NOUN')
 
-# Копирует содержимое базы данаах в виде списка в буфер
-elif len(sys.argv) == 2 and sys.argv[1].lower() == 'list':
-	pyperclip.copy(str(list(mcbShelf.keys())))
-	print('List of records successyfyly copy to bufer')
-	mcbShelf.close()
+starternoun = bool(find_noun.search(content))
+counternoun = 0
 
-#Берет значение из хранилища и помещает в буфер
-elif sys.argv[1] in mcbShelf:
-		pyperclip.copy(mcbShelf[sys.argv[1]])
-		print('Your record successyfyly copy in bufer')
-		mcbShelf.close()
+while starternoun == True:
+	counternoun += 1
+	nounin = input(f'Введите {counternoun} существительное: \n')
+	content = re.sub(find_noun, nounin, content, 1)
+	starternoun = bool(find_noun.search(content))
+	print('\n',content)
 
-# Удаление записей из бд
-elif len(sys.argv) == 3 and sys.argv[1].lower() == 'delete':
-	del mcbShelf[sys.argv[2]]
-	print('Record successyfyly deleted')
-	mcbShelf.close()
+find_verb = re.compile(r'VERB')
 
-# Удаление всех записей из бд
-elif len(sys.argv) == 2 and sys.argv[1].lower() == 'clear':
-	mcbShelf.clear()
-	print('All record successyfyly deleted')
-	mcbShelf.close()
+starterverb = bool(find_verb.search(content))
+counterverb = 0
 
-else:
-	print('Error command, try again')
-	mcbShelf.close()
+while starterverb == True:
+	counterverb += 1
+	verbin = input(f'Введите {counterverb} глагол: \n')
+	content = re.sub(find_verb, verbin, content, 1)
+	starterverb = bool(find_verb.search(content))
+	print('\n',content)
+
+
+textfilecontent = open('keks.txt', 'w')
+textfilecontent.write(content)
