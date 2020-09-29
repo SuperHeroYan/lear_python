@@ -1,21 +1,12 @@
 import os
-import re
 
-answer_user = input('Какое слово хотите искать?\n')
+for folderName, subfolders, filenames in os.walk('./cap'):
+	print('Текущая папка - ' + folderName)
 
-for file in os.listdir('./'):
-	if file.endswith('.txt'):
+	for subfolder in subfolders:
+		print('Подпапка папки ' + folderName + ': ' + subfolder)
 
-		claypath = os.path.join('./', file)
-		opened_file = open(claypath, 'r')
-		content = opened_file.read()
+	for filename in filenames:
+		print('Файл в папке ' + folderName + ': ' + filename)
 
-		regex_patter = re.compile(rf'{answer_user}')
-		result = re.findall(regex_patter, content)
-
-		if result != [] and result != '':
-			print(f'------------------------\nСлово найдено в файле{claypath}\n')
-			print(content,'\n------------------------\n')
-		else:
-			print(f'- {claypath}')
-		
+	print('')
