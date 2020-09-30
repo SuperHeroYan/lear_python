@@ -1,39 +1,40 @@
-# renameDates.py - переименовывает файлы, имена которых включат в себя даты амерк.типа
-# в евпорейский формат 
-import os, re, shutil
+# backupTozip - Делает резервные копии папки в архиве
 
-# Создание регулярки которое будут узнать имена файлов
-datePattern = re.compile(r"""^(.*?) # весь текст перед датой
-	( (0|1)? \d)- # одна или две цифры месяца
-	( (0|1|2|3)? \d)- # одна или две цифры числа
-	( (19|20) \d\d) # четыре цифры года
-	(.*?)$ # весь текст после даты
-	""", re.VERBOSE) 
+import os, zipfile
 
-for amerFilename in os.listdir('.'):
-	mo = datePattern.search(amerFilename)
+def backupToZip(folder):
+	# Создание копии всего содержимого папки "folder" в зипе
+	folder = os.path.abspath(folder)
+	print(os.path.basename(folder))
+	# Определить какое имя файла должен использовать этот код
+	# исходя из имен уже существующих файлов
+	num = 1
+	while True:
+		zipFileName = os.path.basename(folder) + '_' + str(num) + '.zip'
+		if not os.path.exists(zipFileName):
+			break
+		num += 1
 
-	if mo == None:
-		continue
+	print('Создается файл %s...' % (zipFileName) )
+	# Указывай путь куда будут зипа сохраняться перед zipFileName
+	backupZip = zipfile.ZipFile(zipFileName, 'w')
 
-	beforePart = mo.group(1)
-	monthPart = mo.group(2)
-	dayPart = mo.group(4)
-	yearPart = mo.group(6)
-	afterPart = mo.group(8)
+	for foldername, subfolders, filenames in os.walk(folder):
+		print('Добавление файлов из папки %s...' % (foldername)) 
+		# Добавление теккущей папкеи в зип
+		backupZip.write(foldername)
+		
 
-	# Формировние имени файла, по европейски
-	euroFilename = beforePart + dayPart + '-' + monthPart + \
-			'-' + yearPart + afterPart
+		# Добавить в зип все файлы из данной папки
+		for filename in filenames:
+			# Не дает закидывать в зип уже готовые зипы которые находятся в папке
+			newBase = os.path.basename(folder) + '_'
+			if filename.startswith(newBase) and filename.endswith('.zip'):
+				continue
 
-	# Получение полных абсолютеых путей к файлам
-	asbWorkDir = os.path.abspath('.')
-	amerFilename = os.path.join(asbWorkDir, amerFilename)
-	euroFilename = os.path.join(asbWorkDir, euroFilename)
+			backupZip.write(os.path.join(foldername, filename))
 
-	# Переимнование файлов
-	print('Заменяем имя "%s" \nИменем "%s"'
-			% (amerFilename, euroFilename))
+	backupZip.close()
+	print('Готово.')
 
-	shutil.move(amerFilename, euroFilename)
-
+backupToZip('/home/yanchez/Музыка/moddbord')
