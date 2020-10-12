@@ -6,11 +6,12 @@ for foldername, subfolders, filenames in os.walk(folder):
 	counter = 1
 
 	for filename in filenames:
-		counter += 1
-		if filename.endswith('.jpg'):
-			filenamePath = os.path.join(foldername, filename)
-			shutil.copy(filenamePath, '/home/yanchez/Музыка/fffffffffffffffff')
-			
-		elif filename.endswith('.png'):
-			filenamePath = os.path.join(foldername, filename)
-			shutil.copy(filenamePath, '/home/yanchez/Музыка/fffffffffffffffff')
+		filenamePath = os.path.join(foldername, filename)
+		# вычисляте размер мегабайта, то есть возводит 2 в 20 степеньи уможнает на1с
+		# то есть 1*2**20
+		sizefile = os.path.getsize(filenamePath)/float(1<<20)
+
+		if sizefile > 3:
+			print(filenamePath)
+			print('Размер: ',sizefile,'мб')
+			print('---------------------------')
