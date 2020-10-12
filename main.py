@@ -1,17 +1,21 @@
-import os, shutil
+def boxPrint(symbol, width, height ):
 
-folder = '/home/yanchez/Музыка'
+	if len(symbol) != 1:
+		raise Exception('Переменная syblol должна быть односивлоьной')
 
-for foldername, subfolders, filenames in os.walk(folder):
-	counter = 1
+	if width <= 2 :
+		raise Exception('Переменная width должна превышать 2')
 
-	for filename in filenames:
-		filenamePath = os.path.join(foldername, filename)
-		# вычисляте размер мегабайта, то есть возводит 2 в 20 степеньи уможнает на1с
-		# то есть 1*2**20
-		sizefile = os.path.getsize(filenamePath)/float(1<<20)
+	if height <= 2 :
+		raise Exception('Переменная syblol height превышать 2')
 
-		if sizefile > 3:
-			print(filenamePath)
-			print('Размер: ',sizefile,'мб')
-			print('---------------------------')
+	print(symbol * width)
+	for i in range(height - 2):
+		print(symbol + (' ' * (width -2)) + symbol)
+	print(symbol * width)
+
+for sym, w, h in (('*',4,4), ('O',20,5), ('x',1,3), ('ZZ',3,3)):
+	try:
+		boxPrint(sym, w, h)
+	except Exception as err:
+		print('Возникло иск: ' + str(err))
