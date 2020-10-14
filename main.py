@@ -1,21 +1,19 @@
-def boxPrint(symbol, width, height ):
+import logging
+logging.basicConfig(level=logging.DEBUG,
+	format=' %(asctime)s - %(levelname)s - %(message)s')
 
-	if len(symbol) != 1:
-		raise Exception('Переменная syblol должна быть односивлоьной')
+logging.debug('Начало программы')
 
-	if width <= 2 :
-		raise Exception('Переменная width должна превышать 2')
+def factorial(n):
+	logging.debug('Начало factorial (%s)' % (n))
+	total = 1
 
-	if height <= 2 :
-		raise Exception('Переменная syblol height превышать 2')
+	for i in range(1, n + 1):
+		total *= i
+		logging.debug('i = ' + str(i) + ', total = ' + str(total))
 
-	print(symbol * width)
-	for i in range(height - 2):
-		print(symbol + (' ' * (width -2)) + symbol)
-	print(symbol * width)
+	logging.debug('Конец factorial (%s)' % (n))
+	return total
 
-for sym, w, h in (('*',4,4), ('O',20,5), ('x',1,3), ('ZZ',3,3)):
-	try:
-		boxPrint(sym, w, h)
-	except Exception as err:
-		print('Возникло иск: ' + str(err))
+print(' Итоговое число:',factorial(5))
+logging.debug('Конец программы')
