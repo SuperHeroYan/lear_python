@@ -1,19 +1,12 @@
-import logging
-logging.basicConfig(level=logging.DEBUG,
-	format=' %(asctime)s - %(levelname)s - %(message)s')
 
-logging.debug('Начало программы')
+# mapInt prog запускает карту в браузере
 
-def factorial(n):
-	logging.debug('Начало factorial (%s)' % (n))
-	total = 1
+import sys, pyperclip
+import webbrowser
 
-	for i in range(1, n + 1):
-		total *= i
-		logging.debug('i = ' + str(i) + ', total = ' + str(total))
+if len(sys.argv) > 1:
+	addres = ' '.join(sys.argv[1:])
+else:
+	address = pyperclip.paste()
 
-	logging.debug('Конец factorial (%s)' % (n))
-	return total
-
-print(' Итоговое число:',factorial(5))
-logging.debug('Конец программы')
+webbrowser.open('https://www.google.com/maps/place/' + address)
