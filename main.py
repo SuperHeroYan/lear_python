@@ -1,37 +1,39 @@
 
-# Програма которая открывает несколько первых вкладок из google
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
-import requests, os, webbrowser, bs4
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-url = 'https://xkcd.com/'
+browser = webdriver.Firefox()
+browser.get('https://vk.com/')
 
-os.makedirs('xkcd', exist_ok=True)
+email = browser.find_element_by_id('index_email')
+password = browser.find_element_by_id('index_pass')
+button = browser.find_element_by_id('index_login_button')
 
+try:
+	print('Входим в аккаунт..')
+	email.send_keys('***')
+	password.send_keys('***')
+	button.click()
+	print('Добро пожаловать !')
+except:
+	print('Не удалось войти в аккаунт')
 
-while not url.endswith('#'):
-	print('Dowload %s...' % url)
-	res = requests.get(url)
-	res.raise_for_status()
+# Проверяет загрузилась ли страница
+try:
+	wait = WebDriverWait(browser, 10)
+	element = wait.until(EC.element_to_be_clickable((By.ID, 'l_msg')))
+except:
+	print('Не загрузилась')
 
-	soup = bs4.BeautifulSoup(res.text, 'lxml')
-	comicElem = soup.select('#comic img')
+browser.get('https://vk.com/im')
+# Отправляем сообщение серьге
+chatid = browser.find_element_by_css_selector('[data-list-id="****"]')
+chatinput = browser.find_element_by_id('im_editable0')
 
-	if comicElem == []:
-		print('Не удалось найти изображение комикс.')
-	else:
-		# Получаем ссылку на картинку
-		comicUrl = 'https:' + comicElem[0].get('src')
-		print('Загружается изображение %s...' % (comicUrl))
-		res = requests.get(comicUrl)
-		res.raise_for_status()
-		# Сохранение фалфа в папке
-		imageFile = open(os.path.join('xkcd', os.path.basename(comicUrl)), 'wb')
-
-		for chunk in res.iter_content(100000):
-			imageFile.write(chunk)
-		imageFile.close()
-
-	prevLink = soup.select('a[rel="prev"]')[0]
-	url = 'https://xkcd.com' + prevLink.get('href')
-
-print('Готово')
+chatid.click()
+chatinput.send_keys('****')
+chatinput.send_keys(Keys.ENTER)
