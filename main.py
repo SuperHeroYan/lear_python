@@ -1,27 +1,37 @@
 
-# CombinePdfs.py - Обьединяет все PDF документы находящиуся в текущем рабочем
-import PyPDF2 as pdf, os
+import docx
+from docx.enum.text import WD_BREAK
 
-# Получение списка имен всех PDF-файлов
-pdfFiles = []
+doc = docx.Document()
 
-for filename in os.listdir('.'):
-	if filename.endswith('.pdf'):
-		pdfFiles.append(filename)
+guest_list = open('guests.txt')
+read_guest = guest_list.readlines()
 
-# Огранизация цикла по всем файлам
-pdfFiles.sort(key=str.lower)
-pdfWriter = pdf.PdfFileWriter()
+for line in range(0, len(read_guest)):
+	obj1 = doc.add_paragraph('it would a pleasure to have company')
+	# Костбмизация строки
+	obj1.style = 'Title'
+	obj1.outline = True
+	obj1.bold = True
+	# Имя гость
+	name = read_guest[line]
+	obj2 = doc.add_paragraph('Hi %s, youre welcome to party!!'
+						% (name) )
+	obj2.bold = True
+	print(name)
+	# Подпись с лбовь
+	obj3 = doc.add_paragraph('at 11010 Memory lane on the evning')
+	# Костбмизация строки
+	obj3.style = 'Title'
+	obj3.outline = True
+	obj3.bold = True
 
-for filename in pdfFiles:
-	pdffileObj = open(filename, 'rb')
-	pdfReader = pdf.PdfFileReader(pdffileObj)
-	# Проход цикла по всем станицам без первой
-	for pageNum in range(1, pdfReader.numPages):
-		pageObj = pdfReader.getPage(pageNum)
-		pdfWriter.addPage(pageObj)
+	obj5 = doc.add_paragraph('at 7 o`clock')
+	# Костбмизация строки
+	obj5.style = 'Title'
+	obj5.outline = True
+	obj5.bold = True
 
-# Сохранение результат
-pdfOutput = open('allminutes.pdf', 'wb')
-pdfWriter.write(pdfOutput)
-pdfOutput.close()
+	obj5.runs[0].add_break(WD_BREAK.PAGE)
+
+doc.save('twopage.docx')
