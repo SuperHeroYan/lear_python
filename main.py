@@ -1,18 +1,22 @@
 
 import PyPDF2
+import os
 
-pdf = PyPDF2.PdfFileReader(open('encryptedminutes.pdf', 'rb'))
+for folderName, subFolder, fileNames in os.walk('.'):
+	for fileName in fileNames:
+		if fileName.endswith('.pdf'):
+			pdfReader = PyPDF2.PdfFileReader(open(fileName, 'rb'))
+			pdfWriter = PyPDF2.PdfFileWriter()
 
-dictonary = open('dictionary.txt')
-dictonary_text = dictonary.readlines()
-dictonary.close()
+			if pdfReader.isEncrypted:
+				print('Ошибка!! Документ ',pdfReader,' уже зашифрован')
+				break
 
-for passwords in range(0, len(dictonary_text)):
-	password = dictonary_text[passwords]
-	result = pdf.decrypt(password.replace('\n',''))
-	if result == 1 :
-		break
-	else:
-		print('Пароль ', password,' не подошел')
+			for pageNum in range(pdfReader.numPages):
+				pdfWriter.addPage(pdfReader.getPage(pageNum))
 
-print('Пароль подобран:', password)
+			pdfWriter.encrypt('swordfish')
+			resultPdf = open(f'{fileName}__encrypted.pdf', 'wb')
+			pdfWriter.write(resultPdf)
+			resultPdf.close()
+			print('Шифрование ',pdfReader,' прошло успешно')
