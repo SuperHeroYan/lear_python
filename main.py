@@ -1,22 +1,25 @@
 
-import PyPDF2
-import os
+# removeCsvHeader - удаляте заголовки из файлов
+import os, csv
 
-for folderName, subFolder, fileNames in os.walk('.'):
-	for fileName in fileNames:
-		if fileName.endswith('.pdf'):
-			pdfReader = PyPDF2.PdfFileReader(open(fileName, 'rb'))
-			pdfWriter = PyPDF2.PdfFileWriter()
+os.makedirs('headerRemoved', exist_ok=True)
 
-			if pdfReader.isEncrypted:
-				print('Ошибка!! Документ ',pdfReader,' уже зашифрован')
-				break
-
-			for pageNum in range(pdfReader.numPages):
-				pdfWriter.addPage(pdfReader.getPage(pageNum))
-
-			pdfWriter.encrypt('swordfish')
-			resultPdf = open(f'{fileName}__encrypted.pdf', 'wb')
-			pdfWriter.write(resultPdf)
-			resultPdf.close()
-			print('Шифрование ',pdfReader,' прошло успешно')
+for csvFileName in os.listdir('.'):
+	if not csvFileName.endswith('.csv'):
+		continue # Пропускает файла без расширения csv
+	print('Удаление заголовка из файла ' + csvFileName + '.....')
+	# прочитать csv файл с пропускаом первой строки
+	csvRows = []
+	csvFileObj = open(csvFileName)
+	readerObj = csv.reader(csvFileObj)
+	for row in readerObj:
+		if readerObj.line_num == 1:
+			continue
+		csvRows.append(row)
+	csvFileObj.close()
+	# ЗАпись файла
+	csvFileObj = open(os.path.join('headerRemoved', csvFileName), 'w', newline='')
+	csvWriter = csv.writer(csvFileObj)
+	for row in csvRows:
+		csvWriter.writerow(row)
+	csvFileObj.close()
