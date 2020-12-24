@@ -1,25 +1,31 @@
 
-# removeCsvHeader - удаляте заголовки из файлов
-import os, csv
+# quieckWeather - Вывод погоды на несклько дней
+import sys, json, requests
 
-os.makedirs('headerRemoved', exist_ok=True)
+appid = 'fc6db0aefab0febb25a54174bf9ce65f'
+# Определение название населенного пунката из cmd
+if len(sys.argv) < 2:
+	print('Использование: QueckWeather.py location')
+	sys.exit()
+location = ' '.join(sys.argv[1:])
 
-for csvFileName in os.listdir('.'):
-	if not csvFileName.endswith('.csv'):
-		continue # Пропускает файла без расширения csv
-	print('Удаление заголовка из файла ' + csvFileName + '.....')
-	# прочитать csv файл с пропускаом первой строки
-	csvRows = []
-	csvFileObj = open(csvFileName)
-	readerObj = csv.reader(csvFileObj)
-	for row in readerObj:
-		if readerObj.line_num == 1:
-			continue
-		csvRows.append(row)
-	csvFileObj.close()
-	# ЗАпись файла
-	csvFileObj = open(os.path.join('headerRemoved', csvFileName), 'w', newline='')
-	csvWriter = csv.writer(csvFileObj)
-	for row in csvRows:
-		csvWriter.writerow(row)
-	csvFileObj.close()
+# Заполс на сайт за погодой
+url = 'https://api.openweathermap.org/data/2.5/weather/daily?q=%s&cnt=3&appid=%s'\
+	% (location, appid)
+response = requests.get(url)
+response.raise_for_status()
+
+# Загрузка JSON-данных в переменную Python
+weatherData = json.loads(response.text)
+w = weatherData['list']
+print('Погода сегодня в %s:' % (location))
+print(w[0]['weather'][0]['main'], '-', w[0]['weather'][0]['description'])
+print()
+
+print('Завтра:')
+print(w[1]['weather'][0]['main'], '-', w[1]['weather'][0]['description'])
+print()
+
+print('Послезавтра:')
+print(w[2]['weather'][0]['main'], '-', w[2]['weather'][0]['description'])
+print()
