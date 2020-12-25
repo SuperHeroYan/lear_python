@@ -1,14 +1,27 @@
 
+# stopwatch.py - Прогамма хронометр
+
 import time
 
-def calcProd():
-	product = 1
-	for i in range(1, 100000):
-		product = product * i
-	return product
+# Отображение инструкции по использовани. прогаммы.
+print('Чтобы неачать отсчет, нажмите клавигу Enter. \nДля выхода <ctrl+c>')
+input()
 
+print('Отсчет начат')
 startTime = time.time()
-prod = calcProd()
-endTime = time.time()
-print('Длина результата: %s цифр.' % (len(str(prod))))
-print('Расчет занял: %s секунд.' % (endTime - startTime))
+
+lastTime = startTime
+lapNum = 1
+
+# Отслежевание замеров
+try:
+	while True:
+		input()
+		lapTime = round(time.time() - lastTime, 2)
+		totalTime = round(time.time() - startTime, 2)
+		print('Замер #%s: %s (%s)' %
+			(lapNum, totalTime, lapTime), end='')
+		lapNum += 1
+		lastTime = time.time()
+except KeyboardInterrupt:
+	print('\nГотово')
