@@ -1,27 +1,6 @@
 
-# stopwatch.py - Прогамма хронометр
+import time, datetime
 
-import time
-
-# Отображение инструкции по использовани. прогаммы.
-print('Чтобы неачать отсчет, нажмите клавигу Enter. \nДля выхода <ctrl+c>')
-input()
-
-print('Отсчет начат')
-startTime = time.time()
-
-lastTime = startTime
-lapNum = 1
-
-# Отслежевание замеров
-try:
-	while True:
-		input()
-		lapTime = round(time.time() - lastTime, 2)
-		totalTime = round(time.time() - startTime, 2)
-		print('Замер #%s: %s (%s)' %
-			(lapNum, totalTime, lapTime), end='')
-		lapNum += 1
-		lastTime = time.time()
-except KeyboardInterrupt:
-	print('\nГотово')
+halloween2020 = datetime.datetime(2021, 10, 31)
+while datetime.datetime.now() < halloween2020:
+	time.sleep(1)
