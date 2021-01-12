@@ -1,22 +1,22 @@
 
+import io
+import json
+from zipfile import ZipFile
 
-from types import Any, Union
+buf = io.BytesIO()
 
-arrag: Any = "ase"
+with ZipFile(buf, 'w') as file:
+	with io.BytesIO() as json_buf:
 
-arrage: list['str', 11] = ['sae', 22]
-sex: int = 11
-sherks: str = 'sex'
-lfds: None
+		"""Превращаем данные в json"""
+		obj = {'sex':'pleauser', 'death':'suffer'}
+		data = json.dumps(obj)
+		"""записываем данные в буфер """
+		json_buf.write(data.encode())
+		json_buf.seek(0) # При записи в буфер, байт смещаеться, и мы его возвразаем 
 
-kop: float = 1.11
+		file.writestr('1.json', json_buf.read())
 
-def func(value:int, koper: list) -> Any:
-	pass
-
-
-def fun(arr: list[str, ...]) -> int:
-	pass
-
-def func(value: Union[str, int]) -> int:
-	pass
+with open('1.zip', 'wb') as file:
+	buf.seek(0)
+	file.write(buf.read())
