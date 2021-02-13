@@ -1,15 +1,59 @@
-# mouse_now.py - Отображает текущее положение курсора
-import pyautogui
-print('Для выхода нажмите CNTRL+C')
+def apply(product, discount):
+    price = int(product['цена']) * (1.0 - discount)
+    assert 0 <= price <= product['цена'], 'Цена ниже нуля'
+    print(price)
 
-try:
-    while True:
-        x, y = pyautogui.position()
-        pixel_color = pyautogui.screenshot().getpixel((x, y))
 
-        positionStr = f'X: {str(x).rjust(4)} Y: {str(y).rjust(4)} RGB: ({str(pixel_color[0]).rjust(3)}, {str(pixel_color[1]).rjust(3)}, {str(pixel_color[2]).rjust(3)})'
-        print(positionStr, end='')
-        print('\b' * len(positionStr), end='', flush=True)
+shoes = {'Имя': 'Туфли', 'цена': 14900}
 
-except KeyboardInterrupt:
-    print('\nВыход выполнене успешно')
+apply(shoes, 2.0)
+
+# Бед практис всегда возращает Труе
+assert(100 == 111)
+
+me = ('fdsfdsfdsfdsfdsf ,'
+      'fsdfsdfdsfsdfsdfffffffffffffff'
+      'dfsfdsfsdfsd')
+
+
+# Использование Витх
+with open('hello.txt') as f:
+    f.close()
+
+
+# Менеджер контекста
+class Manage:
+    def __init__(self, name):
+        self.name
+
+    def __enter__(self):
+        self.file = open(self.name, 'w')
+        return self.file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+
+
+class Intendter:
+    def __init__(self):
+        self.level = 0
+
+    def __enter__(self):
+        self.level += 1
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.level -= 1
+
+    def print(self, text):
+        print(' ' * self.level + text)
+
+
+with Intendter() as ints:
+    ints.print('Привет')
+    with ints:
+        ints.print('Хей')
+        with ints:
+            ints.print('Бонжур')
+    ints.print('Эй')
